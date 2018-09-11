@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Fade from 'react-reveal/Fade';
 import FormField from './FormField';
 import { validate } from '../../ui/misc';
-
+import { firebasePromotions } from '../../../firebase'
 
 export default class Enroll extends Component {
   state = {
@@ -41,7 +41,7 @@ export default class Enroll extends Component {
       formError: false
     })
   }
-  resetFormSuccess = () => {
+  resetFormSuccess = (type) => {
     const newFormData = {...this.state.formData}
     for(let key  in newFormData){
       newFormData[key].value = "";
@@ -51,7 +51,7 @@ export default class Enroll extends Component {
     this.setState({
       formError: false,
       formData: newFormData,
-      formSuccess: 'Congratulation'
+      formSuccess: type ?  'Congratulation' : "Already on the database"
     })
     this.successMessage()
   }
@@ -63,10 +63,20 @@ export default class Enroll extends Component {
     for(let key in this.state.formData) {
       dataToSubmit[key] = this.state.formData[key].value
       formIsValid = this.state.formData[key].valid && formIsValid
-    }
+
     if(formIsValid) {
-      this.resetFormSuccess()
-    } 
+      firebasePromotions.orderByChild('email').qualTo(dataToSubmit.email).once("value")
+      .then((snapshot) => {
+        if(snapshot.val() === null){
+          firebasePromotions.push(dataToSubmit)
+          this.resetFormSuccess(true)
+        }else{
+          this.resetFormSuccess(false)
+          }
+        })
+      } 
+      // this.resetFormSuccess()
+  
     else {
       this.setState({
         formError: true
@@ -74,8 +84,7 @@ export default class Enroll extends Component {
     }
 
   }
-  successMessage = () => {
-    setTimeout(() =>  this.setState({
+  successMessage = () => setTimeout(() =>  this.setState({
        formSuccess: ''
     })
     , 20000)
@@ -91,6 +100,7 @@ export default class Enroll extends Component {
           {this.state.formError && <div className="error_label">Something is wrong </div>}
           <div className="success_label">{this.state.}</div>
           <button onClick={this.submitForm}>Enroll</button>
+          <div className="enroll_discl">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi non molestiae ratione tempora inventore nihil corporis totam illum quam et?</div>
           </div>
         </form>
         </div>
