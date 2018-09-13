@@ -1,30 +1,38 @@
 import React from 'react'
 
-const FormField = ({formData, id, change}) => {
+const FormField = ({ formData, id, change }) => {
   const showError = () => {
-    let errorMessage = <div className="error_label">
-      {
-        formData.validation && !formData.valid ? formDate.validateMessage : null
-      }
-    </div>
+    let errorMessage = (
+      <div className="error_label">
+        {formData.validation && !formData.valid
+          ? formData.validationMessage
+          : null}
+      </div>
+    )
+    return errorMessage
   }
   const renderTemplate = () => {
     let formTemplate = null
-    switch(formData.element) {
-      case('input'):
-      <div><input {...formData.config} value={formData.value} onChange={evt => change(evt, id)}/>{showError()}</div>
+    switch (formData.element) {
+      case 'input':
+        formTemplate = (
+          <div>
+            <input
+              {...formData.config}
+              value={formData.value}
+              onChange={evt => change({ evt, id })}
+            />
+            {showError()}
+          </div>
+        )
 
-      break;
+        break
       default:
-      formTemplate = null
+        formTemplate = null
     }
     return formTemplate
   }
-  return (
-    <div>
-      {renderTemplate()}
-    </div>
-  )
+  return <div>{renderTemplate()}</div>
 }
 
 export default FormField
