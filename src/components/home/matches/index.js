@@ -19,7 +19,7 @@ const MatchesHome = () => {
             fontSize: '22px',
             color: '#0e1731'
           }}
-          link="/THE_TEAM"
+          link="/THE_MATCHES"
         >
           See more matches
         </Tag>

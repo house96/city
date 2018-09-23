@@ -32,7 +32,7 @@ export default class Header extends Component {
           <Link to="/the_team">
             <Button color="inherit">The team</Button>
           </Link>
-          <Link to="/the-matches">
+          <Link to="/the_matches">
             <Button color="inherit">Matches</Button>
           </Link>
         </Toolbar>

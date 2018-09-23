@@ -66,6 +66,7 @@ export default class SignIn extends Component {
         .auth()
         .signInWithEmailAndPassword(dataToSubmit.email, dataToSubmit.password)
         .then(() => {
+          console.log(formIsValid)
           this.props.history.push('/dashboard')
         })
         .catch(this.setState({ formError: true }))
